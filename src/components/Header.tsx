@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
+  { name: 'Home', href: '#' },
   { name: 'Services', href: '#services' },
   { name: 'How It Works', href: '#how-it-works' },
   { name: 'Gallery', href: '#gallery' },
@@ -13,70 +15,90 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed w-full bg-white/90 backdrop-blur-sm z-50 shadow-sm">
+    <header className="fixed w-full bg-white/80 backdrop-blur-sm z-50 shadow-sm">
       <nav className="container-custom flex items-center justify-between py-4">
-        <div className="flex items-center">
-          <a href="#" className="text-2xl font-bold text-green-nest-600">
+        <div className="flex lg:flex-1">
+          <a href="#" className="-m-1.5 p-1.5 text-2xl font-bold text-green-nest-600">
             GreenNest
           </a>
         </div>
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="flex lg:hidden">
+          <button
+            type="button"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <span className="sr-only">Open main menu</span>
+            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+          </button>
+        </div>
+        <div className="hidden lg:flex lg:gap-x-8">
           {navigation.map((item) => (
             <a
               key={item.name}
               href={item.href}
-              className="text-gray-600 hover:text-green-nest-600 transition-colors"
+              className="text-sm font-semibold leading-6 text-gray-900 hover:text-green-nest-600 transition-colors"
             >
               {item.name}
             </a>
           ))}
-          <a href="#contact" className="btn btn-primary">
-            Book Consultation
+        </div>
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <a
+            href="#contact"
+            className="text-sm font-semibold leading-6 text-white bg-green-nest-600 px-4 py-2 rounded-lg hover:bg-green-nest-700 transition-colors"
+          >
+            Book a Consultation
           </a>
         </div>
-
-        {/* Mobile menu button */}
-        <div className="md:hidden">
+      </nav>
+      <motion.div
+        initial={{ opacity: 0, x: '100%' }}
+        animate={{ opacity: mobileMenuOpen ? 1 : 0, x: mobileMenuOpen ? 0 : '100%' }}
+        transition={{ duration: 0.3 }}
+        className={`fixed inset-y-0 right-0 z-50 w-full bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 ${
+          mobileMenuOpen ? 'block' : 'hidden'
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <a href="#" className="-m-1.5 p-1.5 text-2xl font-bold text-green-nest-600">
+            GreenNest
+          </a>
           <button
             type="button"
-            className="text-gray-600 hover:text-green-nest-600"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="-m-2.5 rounded-md p-2.5 text-gray-700"
+            onClick={() => setMobileMenuOpen(false)}
           >
-            {mobileMenuOpen ? (
-              <XMarkIcon className="h-6 w-6" />
-            ) : (
-              <Bars3Icon className="h-6 w-6" />
-            )}
+            <span className="sr-only">Close menu</span>
+            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-      </nav>
-
-      {/* Mobile Navigation */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t">
-          <div className="container-custom py-4 space-y-4">
-            {navigation.map((item) => (
+        <div className="mt-6 flow-root">
+          <div className="-my-6 divide-y divide-gray-500/10">
+            <div className="space-y-2 py-6">
+              {navigation.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </a>
+              ))}
+            </div>
+            <div className="py-6">
               <a
-                key={item.name}
-                href={item.href}
-                className="block text-gray-600 hover:text-green-nest-600 transition-colors"
+                href="#contact"
+                className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white bg-green-nest-600 hover:bg-green-nest-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {item.name}
+                Book a Consultation
               </a>
-            ))}
-            <a
-              href="#contact"
-              className="block btn btn-primary text-center"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Book Consultation
-            </a>
+            </div>
           </div>
         </div>
-      )}
+      </motion.div>
     </header>
   );
 } 

@@ -1,38 +1,37 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import {
   HomeIcon,
+  BuildingOfficeIcon,
   SunIcon,
-  SparklesIcon,
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline';
 
 const services = [
   {
     title: 'Indoor Plant Styling',
-    description: 'Transform your living spaces with carefully curated indoor plants that complement your interior design.',
+    description: 'Transform your indoor spaces with carefully selected plants that complement your decor and improve air quality.',
     icon: HomeIcon,
   },
   {
     title: 'Balcony/Terrace Gardens',
-    description: 'Create your own urban oasis with our balcony and terrace garden solutions.',
-    icon: SunIcon,
+    description: 'Create your own urban oasis with our balcony and terrace garden design services.',
+    icon: BuildingOfficeIcon,
   },
   {
     title: 'Outdoor Landscaping',
-    description: 'Professional landscaping services to enhance your outdoor spaces with beautiful plant arrangements.',
-    icon: SparklesIcon,
+    description: 'Professional landscaping services to enhance your outdoor spaces with beautiful plants and design elements.',
+    icon: SunIcon,
   },
   {
     title: 'Custom Plant Solutions',
-    description: 'Tailored plant solutions designed to meet your specific needs and preferences.',
+    description: 'Tailored plant solutions for your specific needs, whether it's a corporate space or residential area.',
     icon: WrenchScrewdriverIcon,
   },
 ];
 
 export default function Services() {
   return (
-    <section id="services" className="section-padding bg-gray-50">
+    <section id="services" className="section-padding bg-white">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -45,8 +44,7 @@ export default function Services() {
             Our Services
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our comprehensive range of plant styling and landscaping services
-            designed to bring nature's beauty into your space.
+            We offer a comprehensive range of plant styling and design services to transform your spaces.
           </p>
         </motion.div>
 
@@ -58,9 +56,11 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-gray-50 rounded-xl p-6 text-center"
             >
-              <service.icon className="h-12 w-12 text-green-nest-500 mb-4" />
+              <div className="w-12 h-12 bg-green-nest-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <service.icon className="h-6 w-6 text-green-nest-600" />
+              </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 {service.title}
               </h3>
