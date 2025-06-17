@@ -7,31 +7,33 @@ import {
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline';
 
+type IconType = ComponentType<SVGProps<SVGSVGElement>>;
+
 type Service = {
   title: string;
   description: string;
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
+  icon: IconType;
 };
 
 const services: Service[] = [
   {
-    title: 'Indoor Plant Styling',
-    description: 'Transform your indoor spaces with carefully selected plants that complement your decor and improve air quality.',
+    title: "Indoor Plant Styling",
+    description: "Transform your indoor spaces with carefully selected plants that complement your decor and improve air quality.",
     icon: HomeIcon
   },
   {
-    title: 'Balcony/Terrace Gardens',
-    description: 'Create your own urban oasis with our balcony and terrace garden design services.',
+    title: "Balcony/Terrace Gardens",
+    description: "Create your own urban oasis with our balcony and terrace garden design services.",
     icon: BuildingOfficeIcon
   },
   {
-    title: 'Outdoor Landscaping',
-    description: 'Professional landscaping services to enhance your outdoor spaces with beautiful plants and design elements.',
+    title: "Outdoor Landscaping",
+    description: "Professional landscaping services to enhance your outdoor spaces with beautiful plants and design elements.",
     icon: SunIcon
   },
   {
-    title: 'Custom Plant Solutions',
-    description: 'Tailored plant solutions for your specific needs, whether it's a corporate space or residential area.',
+    title: "Custom Plant Solutions",
+    description: "Tailored plant solutions for your specific needs, whether it's a corporate space or residential area.",
     icon: WrenchScrewdriverIcon
   }
 ];
