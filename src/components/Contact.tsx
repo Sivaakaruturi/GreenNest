@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   EnvelopeIcon,
   PhoneIcon,
   MapPinIcon,
+  ClockIcon,
 } from '@heroicons/react/24/outline';
 
 export default function Contact() {
@@ -13,23 +14,64 @@ export default function Contact() {
     phone: '',
     message: '',
   });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-  };
+  const [status, setStatus] = useState({
+    loading: false,
+    success: false,
+    error: false,
+    message: '',
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus({ loading: true, success: false, error: false, message: '' });
+
+    try {
+      // Format the message for WhatsApp
+      const whatsappMessage = `New Contact Form Submission:\n\n` +
+        `Name: ${formData.name}\n` +
+        `Email: ${formData.email}\n` +
+        `Phone: ${formData.phone}\n` +
+        `Message: ${formData.message}`;
+
+      // Encode the message for URL
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+      
+      // Replace with your WhatsApp number (include country code)
+      const whatsappNumber = '919390090922'; // Indian number with country code
+      
+      // Create WhatsApp URL
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+      
+      // Open WhatsApp in a new tab
+      window.open(whatsappUrl, '_blank');
+
+      setStatus({
+        loading: false,
+        success: true,
+        error: false,
+        message: 'Thank you for your message! We will get back to you soon.',
+      });
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      setStatus({
+        loading: false,
+        success: false,
+        error: true,
+        message: 'Sorry, there was an error sending your message. Please try again.',
+      });
+    }
+  };
+
   return (
-    <section id="contact" className="section-padding bg-gray-50">
+    <section id="contact" className="section-padding bg-white">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -39,133 +81,157 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Get in Touch
+            Contact Us
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Ready to transform your space with beautiful plants? Contact us today for a consultation.
+            Get in touch with us to discuss your plant styling needs or schedule a consultation.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-nest-500 focus:border-transparent"
-                  required
-                />
+            <div className="space-y-8">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <EnvelopeIcon className="h-6 w-6 text-green-nest-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Email</h3>
+                  <p className="mt-1 text-gray-600">info@greennest.com</p>
+                </div>
               </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-nest-500 focus:border-transparent"
-                  required
-                />
+
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <PhoneIcon className="h-6 w-6 text-green-nest-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
+                  <p className="mt-1 text-gray-600">+1 (234) 567-890</p>
+                </div>
               </div>
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-nest-500 focus:border-transparent"
-                />
+
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <MapPinIcon className="h-6 w-6 text-green-nest-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Address</h3>
+                  <p className="mt-1 text-gray-600">123 Plant Street, Green City</p>
+                </div>
               </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-nest-500 focus:border-transparent"
-                  required
-                />
+
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <ClockIcon className="h-6 w-6 text-green-nest-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Business Hours</h3>
+                  <p className="mt-1 text-gray-600">
+                    Monday - Friday: 9:00 AM - 6:00 PM<br />
+                    Saturday: 10:00 AM - 4:00 PM<br />
+                    Sunday: Closed
+                  </p>
+                </div>
               </div>
-              <button
-                type="submit"
-                className="w-full bg-green-nest-600 text-white py-3 px-6 rounded-lg hover:bg-green-nest-700 transition-colors duration-300"
-              >
-                Send Message
-              </button>
-            </form>
+            </div>
           </motion.div>
 
-          {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="space-y-8"
           >
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Contact Information
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <EnvelopeIcon className="h-6 w-6 text-green-nest-600 mt-1" />
-                  <div className="ml-3">
-                    <p className="text-gray-900 font-medium">Email</p>
-                    <p className="text-gray-600">contact@greennest.com</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <PhoneIcon className="h-6 w-6 text-green-nest-600 mt-1" />
-                  <div className="ml-3">
-                    <p className="text-gray-900 font-medium">Phone</p>
-                    <p className="text-gray-600">+1 (555) 123-4567</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <MapPinIcon className="h-6 w-6 text-green-nest-600 mt-1" />
-                  <div className="ml-3">
-                    <p className="text-gray-900 font-medium">Address</p>
-                    <p className="text-gray-600">123 Green Street, Garden City, GC 12345</p>
-                  </div>
-                </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-nest-500 focus:ring-green-nest-500"
+                />
               </div>
-            </div>
 
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Business Hours
-              </h3>
-              <div className="space-y-2">
-                <p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>
-                <p className="text-gray-600">Saturday: 10:00 AM - 4:00 PM</p>
-                <p className="text-gray-600">Sunday: Closed</p>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-nest-500 focus:ring-green-nest-500"
+                />
               </div>
-            </div>
+
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                  Phone
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-nest-500 focus:ring-green-nest-500"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  id="message"
+                  rows={4}
+                  required
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-nest-500 focus:ring-green-nest-500"
+                />
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={status.loading}
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-nest-600 hover:bg-green-nest-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-nest-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {status.loading ? 'Sending...' : 'Send Message via WhatsApp'}
+                </button>
+              </div>
+
+              {status.message && (
+                <div
+                  className={`mt-4 p-4 rounded-md ${
+                    status.success
+                      ? 'bg-green-50 text-green-800'
+                      : status.error
+                      ? 'bg-red-50 text-red-800'
+                      : ''
+                  }`}
+                >
+                  {status.message}
+                </div>
+              )}
+            </form>
           </motion.div>
         </div>
       </div>
