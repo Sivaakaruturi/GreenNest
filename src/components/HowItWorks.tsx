@@ -1,16 +1,15 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import {
   CalendarIcon,
   ClipboardDocumentListIcon,
-  TruckIcon,
   WrenchScrewdriverIcon,
+  ClockIcon,
 } from '@heroicons/react/24/outline';
 
 const steps = [
   {
     title: 'Book a Visit',
-    description: 'Schedule a free consultation with our plant experts to discuss your vision.',
+    description: 'Schedule a consultation with our plant experts to discuss your space and requirements.',
     icon: CalendarIcon,
   },
   {
@@ -20,19 +19,19 @@ const steps = [
   },
   {
     title: 'Installation',
-    description: 'Our team handles the complete installation of your plant arrangements.',
-    icon: TruckIcon,
+    description: 'Our team handles the complete installation of your plants and styling elements.',
+    icon: WrenchScrewdriverIcon,
   },
   {
     title: 'Optional Maintenance',
-    description: 'Keep your plants thriving with our professional maintenance services.',
-    icon: WrenchScrewdriverIcon,
+    description: 'Choose from our maintenance packages to keep your plants thriving.',
+    icon: ClockIcon,
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="section-padding">
+    <section id="how-it-works" className="section-padding bg-white">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -45,7 +44,7 @@ export default function HowItWorks() {
             How It Works
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Our simple 4-step process makes it easy to transform your space with beautiful plants.
+            Our simple four-step process makes it easy to transform your space with beautiful plants.
           </p>
         </motion.div>
 
@@ -57,22 +56,17 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative"
+              className="text-center"
             >
-              <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-nest-100 text-green-nest-600 mb-4">
-                  <step.icon className="h-6 w-6" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-gray-600">
-                  {step.description}
-                </p>
+              <div className="w-16 h-16 bg-green-nest-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <step.icon className="h-8 w-8 text-green-nest-600" />
               </div>
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-green-nest-200" />
-              )}
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                {step.title}
+              </h3>
+              <p className="text-gray-600">
+                {step.description}
+              </p>
             </motion.div>
           ))}
         </div>
