@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -13,6 +13,20 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to restore scroll when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <header className="fixed w-full bg-white/80 backdrop-blur-sm z-50 shadow-sm">
@@ -77,8 +91,9 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="fixed inset-y-0 right-0 z-50 w-full bg-white shadow-2xl"
+              className="fixed inset-0 z-50 w-full h-full min-h-screen bg-white flex flex-col"
             >
+              {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
                 <a href="#" className="-m-1.5 p-1.5 text-2xl font-bold text-green-nest-600">
                   GreenNest
@@ -92,31 +107,36 @@ export default function Header() {
                   <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
-              <div className="mt-6 flow-root px-6 bg-white">
-                <div className="-my-6 divide-y divide-gray-200">
-                  <div className="space-y-2 py-6">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 transition-colors"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                  <div className="py-6">
+              
+              {/* Navigation Links */}
+              <div className="flex-1 px-6 py-8 bg-white">
+                <div className="space-y-4">
+                  {navigation.map((item) => (
                     <a
-                      href="#contact"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white bg-green-nest-600 hover:bg-green-nest-700 transition-colors"
+                      key={item.name}
+                      href={item.href}
+                      className="block rounded-lg px-4 py-4 text-xl font-semibold text-gray-900 hover:bg-gray-50 transition-colors"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Book a Consultation
+                      {item.name}
                     </a>
-                  </div>
+                  ))}
                 </div>
               </div>
+              
+              {/* Book Consultation Button */}
+              <div className="p-6 border-t border-gray-200 bg-white flex-shrink-0">
+                <a
+                  href="#contact"
+                  className="block w-full text-center rounded-lg px-4 py-4 text-xl font-semibold text-white bg-green-nest-600 hover:bg-green-nest-700 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Book a Consultation
+                </a>
+              </div>
+              
+              {/* Extra white space to fill bottom */}
+              <div className="flex-1 bg-white"></div>
             </motion.div>
           </>
         )}
